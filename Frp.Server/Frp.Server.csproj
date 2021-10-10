@@ -6,4 +6,54 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Icons\**" />
+      <EmbeddedResource Remove="Icons\**" />
+      <None Remove="Icons\**" />
+      <Page Remove="Icons\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="songsu.png" />
+      <None Remove="woniu.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HandyControl" Version="3.2.0" />
+      <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.18" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frp.NetWork\Frp.NetWork.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="songsu.png" />
+      <Resource Include="woniu.png" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+    <ItemGroup>
+      <None Update="Frps\frps.exe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Frps\frps.ini">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

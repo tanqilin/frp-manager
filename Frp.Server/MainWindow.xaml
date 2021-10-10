@@ -1,12 +1,166 @@
-﻿<Window x:Class="Frp.Server.MainWindow"
+﻿<hc:Window x:Class="Frp.Server.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Frp.Server"
+        xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:viewmodel="clr-namespace:Frp.Server.ViewModel" xmlns:UserControl="clr-namespace:Frp.Server" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        DataContext="MainViewModel"
+        Title="FRPS服务端配置 " Height="650" Width="1000">
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <hc:Card Grid.Column="0" Margin="5" MinWidth="250" MaxWidth="350">
+                <UserControl:FrpsManagerUserController/>
+            </hc:Card>
+            <hc:TransitioningContentControl Grid.Column="1">
+                <Grid Margin="22">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    
+                    <ScrollViewer Grid.Row="0" >
+                        <StackPanel hc:TitleElement.TitleWidth="168">
+                            <Expander IsExpanded="True" Header="基础配置" Margin="5">
+                                <Border BorderThickness="1,0,1,1" BorderBrush="{DynamicResource BorderBrush}" Background="White" CornerRadius="0,0,4,4">
+                                   <StackPanel Margin="15">
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="服务器监听地址" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.startConfig.bind_addr}"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="7000" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="服务器监听端口：" Text="{Binding Config.startConfig.bind_port}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="用于辅助创建P2P连接" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="服务端监听UDP端口：" Text="{Binding Config.startConfig.bind_udp_port}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="用于接收采用KCP连接的frpc" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="服务端监听KCP协议端口：" Text="{Binding Config.startConfig.kcp_bind_port}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="同bind_addr" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="代理监听地址：" Text="{Binding Config.startConfig.proxy_bind_addr}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="如果设置为 console，会将日志打印在标准输出中" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="日志文件地址：" Text="{Binding Config.startConfig.log_file}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="日志等级：info,trace,debug,warn,error" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="日志等级：" Text="{Binding Config.startConfig.log_level}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="请输入日志保存天数" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="日志文件保留天数：" Text="{Binding Config.startConfig.log_max_days}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                           <TextBlock Text="禁用标准输出中的日志颜色："  VerticalAlignment="Center" Width="200"/>
+                                           <ToggleButton IsChecked="{Binding Config.startConfig.disable_log_color}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                       </StackPanel>
+                                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                           <TextBlock Text="服务端返回详细错误信息给客户端："  VerticalAlignment="Center" Width="200"/>
+                                        <ToggleButton IsChecked="{Binding Config.startConfig.detailed_errors_to_client}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                       </StackPanel>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="心跳连接的超时时间" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="心跳连接的超时时间：" Text="{Binding Config.startConfig.heart_beat_timeout}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="用户建立连接后等待客户端响应的超时时间" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="响应的超时时间：" Text="{Binding Config.startConfig.user_conn_timeout}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="服务端和客户端的值需要一致" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="代理UDP服务时支持的最大包长度：" Text="{Binding Config.startConfig.udp_packet_size}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="TLS服务端证书文件路径：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"  Text="{Binding Config.startConfig.tls_cert_file}"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="TLS服务端密钥文件路径：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.startConfig.tls_key_file}"/>
+                                       <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="TLS CA证书路径：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.startConfig.tls_trusted_ca_file}"/>
+  
+                                   </StackPanel> 
+                                </Border>
+                            </Expander>
+                            
+                            <Expander IsExpanded="True" Header="权限验证" Margin="5">
+                                <Border BorderThickness="1,0,1,1" BorderBrush="{DynamicResource BorderBrush}" Background="White" CornerRadius="0,0,4,4">
+                                    <StackPanel Margin="15">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="是否启用此模块："  VerticalAlignment="Center" Width="200"/>
+                                            <ToggleButton Name="qxyz_enable" IsChecked="{Binding Config.authenConfig.enabled}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                        </StackPanel>
+                                        <StackPanel IsEnabled="{Binding ElementName=qxyz_enable,Path=IsChecked}">
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="鉴权方式:token, oidc" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="鉴权方式:" Text="{Binding Config.authenConfig.authentication_method}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="开启心跳消息鉴权："  VerticalAlignment="Center" Width="200"/>
+                                                <ToggleButton IsChecked="{Binding Config.authenConfig.authenticate_heartbeats}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="开启建立工作连接的鉴权："  VerticalAlignment="Center" Width="200"/>
+                                                <ToggleButton IsChecked="{Binding Config.authenConfig.authenticate_new_work_conns}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="鉴权使用的 token 值" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="鉴权使用的token值：" Text="{Binding Config.authenConfig.token}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="oidc_issuer" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="oidc_issuer：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.authenConfig.oidc_issuer}"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="oidc_audience" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="oidc_audience：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.authenConfig.oidc_audience}"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="oidc_skip_expiry_check："  VerticalAlignment="Center" Width="200"/>
+                                                <ToggleButton IsChecked="{Binding Config.authenConfig.oidc_skip_expiry_check}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="oidc_skip_expiry_check："  VerticalAlignment="Center" Width="200"/>
+                                                <ToggleButton IsChecked="{Binding Config.authenConfig.oidc_skip_issuer_check}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                        </StackPanel> 
+                                    </StackPanel>
+                                </Border>
+                            </Expander>
+                            
+                            <Expander IsExpanded="True" Header="管理配置" Margin="5">
+                                <Border BorderThickness="1,0,1,1" BorderBrush="{DynamicResource BorderBrush}" Background="White" CornerRadius="0,0,4,4">
+                                    <StackPanel Margin="15">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="是否启用此模块："  VerticalAlignment="Center" Width="200"/>
+                                            <ToggleButton Name="glpz_enable" IsChecked="{Binding Config.adminConfig.enabled}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                        </StackPanel>
+                                        <StackPanel IsEnabled="{Binding ElementName=glpz_enable,Path=IsChecked}">
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="格式为 1000-2000,2001,3000-4000" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="允许代理绑定的服务端端口"  Text="{Binding Config.adminConfig.allow_ports}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="最大连接池大小" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="最大连接池大小：" Text="{Binding Config.adminConfig.max_pool_count}"  Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="限制单个客户端最大同时存在的代理数(0表示没有限制)" hc:TitleElement.Title="限制单个客户端最大同时存在的代理数：" Text="{Binding Config.adminConfig.max_ports_per_client}" hc:TitleElement.TitlePlacement="Left" Style="{StaticResource TextBoxExtend}" Margin="0,6,0,0"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="只接受启用了TLS的客户端连接："  VerticalAlignment="Center" Width="200"/>
+                                                <ToggleButton IsChecked="{Binding Config.adminConfig.tls_only}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel> 
+                                </Border>
+                            </Expander>
+                            
+                            <Expander IsExpanded="True" Header="Dashboard,监控" Margin="5">
+                                <Border BorderThickness="1,0,1,1" BorderBrush="{DynamicResource BorderBrush}" Background="White" CornerRadius="0,0,4,4">
+                                    <StackPanel Margin="15">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="是否启用此模块："  VerticalAlignment="Center" Width="200"/>
+                                            <ToggleButton Name="web_enable" IsChecked="{Binding Config.dashboardConfig.enabled}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                        </StackPanel>
+                                        <StackPanel IsEnabled="{Binding ElementName=web_enable,Path=IsChecked}">
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Placeholder="Dashboard 监听的本地地址" hc:InfoElement.Title="监听的本地地址：" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0" Text="{Binding Config.dashboardConfig.dashboard_addr}"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="Dashboard 监听的本地端口" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="监听的本地端口：" Text="{Binding Config.dashboardConfig.dashboard_port}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="Frps Web 端管理用户名" hc:TitleElement.Title="HTTP BasicAuth 用户名：" Text="{Binding Config.dashboardConfig.dashboard_user}" hc:TitleElement.TitlePlacement="Left" Style="{StaticResource TextBoxExtend}" Margin="0,6,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="Frps Web 端管理密码" hc:TitleElement.Title="HTTP BasicAuth 密码：" Text="{Binding Config.dashboardConfig.dashboard_pwd}" hc:TitleElement.TitlePlacement="Left" Style="{StaticResource TextBoxExtend}" Margin="0,6,0,0"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="是否提供Prometheus监控接口："  VerticalAlignment="Center" Width="200"/>
+                                            <ToggleButton IsChecked="{Binding Config.dashboardConfig.enable_prometheus}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                            </StackPanel>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="Dashboard 使用的资源默认打包在二进制文件中，通过指定此参数使用自定义的静态资源" hc:TitleElement.Title="静态资源目录：" hc:TitleElement.TitlePlacement="Left" Style="{StaticResource TextBoxExtend}" Text="{Binding Config.dashboardConfig.asserts_dir}" Margin="0,6,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel> 
+                                </Border>
+                            </Expander>
+                            
+                            <Expander IsExpanded="True" Header="HTTP,HTTPS" Margin="5">
+                                <Border BorderThickness="1,0,1,1" BorderBrush="{DynamicResource BorderBrush}" Background="White" CornerRadius="0,0,4,4">
+                                    <StackPanel Margin="15">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="是否启用此模块："  VerticalAlignment="Center" Width="200"/>
+                                            <ToggleButton Name="http_enable" IsChecked="{Binding Config.httpConfig.enabled}" Margin="5,9" HorizontalAlignment="Center" Style="{StaticResource ToggleButtonSwitch}"/>
+                                        </StackPanel>
+                                        <StackPanel IsEnabled="{Binding ElementName=http_enable,Path=IsChecked}">
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="为 HTTP 类型代理监听的端口" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="为HTTP类型代理监听的端口：" Text="{Binding Config.httpConfig.vhost_http_port}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="为 HTTPS 类型代理监听的端口" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="为HTTPS类型代理监听的端口：" Text="{Binding Config.httpConfig.vhost_https_port}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="HTTP 类型代理在服务端的 ResponseHeader 超时时间" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="ResponseHeader 超时时间：" Text="{Binding Config.httpConfig.vhost_http_timeout}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="二级域名后缀" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="二级域名后缀：" Text="{Binding Config.httpConfig.subdomain_host}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                            <TextBox hc:InfoElement.TitleWidth="200" hc:InfoElement.Placeholder="自定义 404 错误页面地址" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="自定义 404 错误页面地址：" Text="{Binding Config.httpConfig.custom_404_page}" Style="{StaticResource TextBoxExtend}" Margin="0,10,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Expander>
+                        </StackPanel>
+                    </ScrollViewer>
 
-    </Grid>
-</Window>
+                    <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!--<Button Click="StopFrpsServer_btn" Grid.Column="0" HorizontalAlignment="Left" Margin="5" MinWidth="100" Content="停止Frps" Cursor="Hand" Style="{StaticResource ButtonWarning}"/>-->
+                            <Button Click="SaveFrpsConfig_btn" Grid.Column="3" HorizontalAlignment="left" Margin="5" MinWidth="100" Content="保存" Cursor="Hand" Style="{StaticResource ButtonPrimary}"/>
+                        </Grid>
+                </Grid>
+            </hc:TransitioningContentControl>
+        </Grid>
+</hc:Window>
